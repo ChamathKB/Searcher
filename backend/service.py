@@ -32,7 +32,6 @@ async def read_item(q: str, neural: bool = True):
     }
 
 
-# Mount the static files directory once the search endpoint is defined
 if os.path.exists(STATIC_DIR):
     app.mount("/", StaticFiles(directory=STATIC_DIR, html=True))
 
