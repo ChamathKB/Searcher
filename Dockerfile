@@ -33,16 +33,16 @@ RUN poetry config virtualenvs.create false
 WORKDIR /app
 
 # Copy poetry files & install the dependencies
-COPY ./pyproject.toml /app
-COPY ./poetry.lock /app
+COPY ./backend/pyproject.toml /app
+COPY ./backend/poetry.lock /app
 COPY --from=build-step /app/dist /app/static
 
 RUN poetry install --no-interaction --no-ansi --no-root --without dev
 RUN python -c 'from fastembed.embedding import DefaultEmbedding; DefaultEmbedding("sentence-transformers/all-MiniLM-L6-v2")'
 
 # Finally copy the application source code and install root
-COPY qdrant_demo /app/qdrant_demo
+COPY ./backend/searcher /app/searcher
 
 EXPOSE 8000
 
-CMD uvicorn qdrant_demo.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
+CMD uvicorn searcher.service:app --host 0.0.0.0 --port 8000 --workers ${WORKERS:-1}
