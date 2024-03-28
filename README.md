@@ -2,7 +2,7 @@
 
 Neural search and text search with Qdrant vectorDB, sentence-transformers embedding models, and FastAPI.
 
-The demo is based on the vector search engine Qdrant.
+The demo is based on the vector search engine Qdrant and [demo app](https://github.com/qdrant/qdrant_demo).
 
 ## Requirements
 python:
