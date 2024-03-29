@@ -10,5 +10,6 @@ QDRANT_API_KEY = os.environ.get("QDRANT_API_KEY", "")
 
 COLLECTION_NAME = os.environ.get("COLLECTION_NAME", "text-demo")
 EMBEDDINGS_MODEL = os.environ.get("EMBEDDINGS_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+CROSSENCODER_MODEL = os.environ.get("CROSSENCODER_MODEL", "cross-encoder/ms-marco-TinyBERT-L-2-v2")
 
 TEXT_FIELD_NAME = "document"

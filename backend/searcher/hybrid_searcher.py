@@ -1,20 +1,20 @@
+from sentence_transformers.cross_encoder import CrossEncoder
+
 from .neural_searcher import NeuralSearcher
 from .text_searcher import TextSearcher
+from .config import CROSSENCODER_MODEL
+
+# resolve dependancies
+model = CrossEncoder(CROSSENCODER_MODEL)
 
 class HybridSearcher:
-    def __init__(self, collection_name: str, query: str):
-        # self.text_searcher = TextSearcher(collection_name, query)
-        # self.neural_searcher = NeuralSearcher(collection_name, query)
-        self.collection_name = collection_name
-        self.query = query
+    def __init__(self, collection_name: str):
+        self.text_searcher = TextSearcher(collection_name)
+        self.neural_searcher = NeuralSearcher(collection_name)
 
-    async def search(self, query):
-        # TODO
-        # re-ranking https://qdrant.tech/articles/hybrid-search/
-        key_word_result = await TextSearcher(self.collection_name, query).search()
-
-        if len(key_word_result) > 3:
-            return key_word_result
-        else:
-            neural_search = await NeuralSearcher(self.collection_name, query).search()
-            return neural_search
+    def search(self, query: str):
+        keyword_results = self.text_searcher(query)
+        neural_results = self.neural_searcher(query)
+        all_results = keyword_results + neural_results
+        ranks = model.rank(query, all_results)
+        return ranks
