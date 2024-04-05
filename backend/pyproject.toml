@@ -14,7 +14,7 @@ loguru = "^0.5.3"
 requests = "^2.25.1"
 tqdm = "^4.66.1"
 qdrant-client = {extras = ["fastembed"], version = "^1.6.3"}
-sentence-transformers = "^2.6.1" 
+flashrank = "~0.2.0" 
 
 [tool.poetry.dev-dependencies]
 
