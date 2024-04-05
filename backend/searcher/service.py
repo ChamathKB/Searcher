@@ -5,7 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import COLLECTION_NAME, STATIC_DIR
 from .neural_searcher import NeuralSearcher
 from .text_searcher import TextSearcher
+from .hybrid_searcher import HybridSearcher
 
+from typing import Optional
 import uvicorn
 import os
 
@@ -22,15 +24,38 @@ app.add_middleware(
 
 neural_searcher = NeuralSearcher(collection_name=COLLECTION_NAME)
 text_searcher = TextSearcher(collection_name=COLLECTION_NAME)
+hybrid_searcher = HybridSearcher(collection_name=COLLECTION_NAME)
 
 
 @app.get("/api/search")
-async def read_item(q: str, neural: bool = True):
-    return {
-        "result": neural_searcher.search(text=q)
-        if neural else text_searcher.search(query=q)
-    }
+async def read_item(q: str, neural: Optional[bool] = True, hybrid: Optional[bool] = False):
+    """
+    Performs a search based on the provided query and search type.
 
+    This endpoint supports three search types:
+
+    - Text search (default): Uses the text search engine for efficient keyword-based search.
+    - Neural search (optional, requires `neural=True`): Uses the neural search engine for more semantic understanding.
+    - Hybrid search (optional, requires `hybrid=True`): Combines text and neural search results, followed by reranking.
+
+    Args:
+        q (str): The search query string.
+        neural (bool, optional): Whether to perform neural search (defaults to True).
+        hybrid (bool, optional): Whether to perform hybrid search (defaults to False).
+
+    Returns:
+        Dict: A dictionary containing the search results in the format expected by the client.
+              The exact format may depend on the chosen search type (text, neural, or hybrid).
+    """
+
+    if hybrid:
+        results = hybrid_searcher.search(query=q)  # Use hybrid search function
+    elif neural:
+        results = neural_searcher.search(text=q)  # Use neural search if requested
+    else:
+        results = text_searcher.search(query=q)  # Default to text search
+
+    return {"result": results}
 
 if os.path.exists(STATIC_DIR):
     app.mount("/", StaticFiles(directory=STATIC_DIR, html=True))
