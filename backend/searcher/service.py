@@ -28,7 +28,7 @@ hybrid_searcher = HybridSearcher(collection_name=COLLECTION_NAME)
 
 
 @app.get("/api/search")
-async def read_item(q: str, neural: Optional[bool] = True, hybrid: Optional[bool] = False):
+async def read_item(q: str, search_type: str = "hybrid") -> Dict:
     """
     Performs a search based on the provided query and search type.
 
@@ -48,12 +48,15 @@ async def read_item(q: str, neural: Optional[bool] = True, hybrid: Optional[bool
               The exact format may depend on the chosen search type (text, neural, or hybrid).
     """
 
-    if hybrid:
+    if search_type=="hybrid":
         results = hybrid_searcher.search(query=q)  # Use hybrid search function
-    elif neural:
+        print("hybrid")
+    elif search_type=="neural":
         results = neural_searcher.search(text=q)  # Use neural search if requested
+        print("neural")
     else:
         results = text_searcher.search(query=q)  # Default to text search
+        print("text")
 
     return {"result": results}
 
