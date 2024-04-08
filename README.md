@@ -11,7 +11,7 @@ pip install poetry
 poetry install
 ```
 
-as well as docker and docker compose
+as well as docker and docker compose.
 
 ## Upload data to searcher
 ### startups dataset
@@ -33,3 +33,34 @@ cd Searcher/backend
 python -m searcher.init_collection_startup
 ```
 
+# Search API
+In the API, there are three distinct search methods available:
+1. Neural
+2. Text
+3. Hybrid
+
+## 1. Neural Search
+Neural Search utilizes embeddings models to perform vector search operations on the vectorDB.
+
+To execute a Neural Search, use the following cURL command:
+```
+curl -X GET "http://localhost:8000/api/search?q=QTECT&search_type=neural"
+```
+
+## 2. Text Search
+Text Search employs the MatchText filter to match text within documents against the provided query.
+
+To initiate a Text Search, use the following cURL command:
+```
+curl -X GET "http://localhost:8000/api/search?q=QTECT&search_type=text"
+```
+
+## 3. Hybrid Search
+Hybrid Search combines both Neural Search and Text Search methodologies, subsequently re-ranking the results using cross-encoder models. This approach ensures the retrieval of the most accurate results in specific scenarios.
+
+For more detailed information on Hybrid Search, visit the following link: [Hybrid Search Article](https://qdrant.tech/articles/hybrid-search/)
+
+To perform a Hybrid Search, utilize the following cURL command:
+```
+curl -X GET "http://localhost:8000/api/search?q=QTECT&search_type=hybrid"
+```

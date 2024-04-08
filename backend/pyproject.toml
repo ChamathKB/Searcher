@@ -2,7 +2,9 @@
 name = "Searcher"
 version = "0.0.2"
 description = "Qdrant vector similarity engine demo"
-authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>"]
+authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>",
+           "Chamath Kaushalya <kaushalyabandaraatta@gmail.com>"
+           ]
 
 [tool.poetry.dependencies]
 python = "~3.11"
