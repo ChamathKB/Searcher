@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "Searcher"
-version = "0.0.1"
+version = "0.0.2"
 description = "Qdrant vector similarity engine demo"
-authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>"]
+authors = ["Andrey Vasnetsov <andrey@vasnetsov.com>",
+           "Chamath Kaushalya <kaushalyabandaraatta@gmail.com>"
+           ]
 
 [tool.poetry.dependencies]
 python = "~3.11"
@@ -14,6 +16,7 @@ loguru = "^0.5.3"
 requests = "^2.25.1"
 tqdm = "^4.66.1"
 qdrant-client = {extras = ["fastembed"], version = "^1.6.3"}
+flashrank = "~0.2.0" 
 
 [tool.poetry.dev-dependencies]
 
