@@ -1,10 +1,9 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http.models.models import Filter
+from typing import List, Dict
+import time
 
 from .config import QDRANT_URL, QDRANT_API_KEY, EMBEDDINGS_MODEL
-
-from typing import List
-import time
 
 
 class NeuralSearcher:
@@ -15,8 +14,15 @@ class NeuralSearcher:
         self.qdrant_client.set_model(EMBEDDINGS_MODEL)
 
 
-    def search(self, text: str, filter_: dict = None) -> List[dict]:
+    def search(self, text: str, filter_: dict = None) -> List[Dict]:
         """Search for documents in the collection.
+
+        Args:
+            text (str): The search query string.
+            filter_ (dict, optional): A dictionary containing filters to refine the search results. Defaults to None.
+
+        Returns:
+            List[dict]: A list of dictionaries representing the data of the retrieved documents.
         """
         start_time = time.time()
         
