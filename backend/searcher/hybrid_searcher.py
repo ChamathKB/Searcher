@@ -25,7 +25,7 @@ class HybridSearcher:
             converted_data.append({
                 "id": i + 1,
                 "text": item["document"],
-                "meta": {"additional": f"info{i + 1}"}
+                "meta": {"source": item}
             })
         return converted_data
 
@@ -46,9 +46,10 @@ class HybridSearcher:
         keyword_results = self.text_searcher.search(query)
         neural_results = self.neural_searcher.search(query)
         all_results = keyword_results + neural_results
+
+        # convert the data to the format expected by the ranker
         converted_data = HybridSearcher.convert_data(all_results)
         reranked_results = RerankRequest(query=query, passages=converted_data)
         results = ranker.rerank(reranked_results)
-        # return [{"id": result["id"], "text": result["text"], "meta": result.get("meta", {}), "score": result.get("score", 0.0)} for result in reranked_results]
-        print(results)
-        return results
+
+        return [result["meta"]["source"] for result in results]
