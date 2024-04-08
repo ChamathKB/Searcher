@@ -7,7 +7,7 @@ from .neural_searcher import NeuralSearcher
 from .text_searcher import TextSearcher
 from .hybrid_searcher import HybridSearcher
 
-from typing import Optional
+from typing import Dict
 import uvicorn
 import os
 
@@ -49,14 +49,11 @@ async def read_item(q: str, search_type: str = "hybrid") -> Dict:
     """
 
     if search_type=="hybrid":
-        results = hybrid_searcher.search(query=q)  # Use hybrid search function
-        print("hybrid")
+        results = hybrid_searcher.search(query=q)  
     elif search_type=="neural":
-        results = neural_searcher.search(text=q)  # Use neural search if requested
-        print("neural")
+        results = neural_searcher.search(text=q)  
     else:
-        results = text_searcher.search(query=q)  # Default to text search
-        print("text")
+        results = text_searcher.search(query=q)  
 
     return {"result": results}
 
