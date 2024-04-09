@@ -1,11 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import COLLECTION_NAME, STATIC_DIR
+from .config import COLLECTION_NAME, STATIC_DIR, DATA_DIR
 from .neural_searcher import NeuralSearcher
 from .text_searcher import TextSearcher
 from .hybrid_searcher import HybridSearcher
+from .embedder import Uploader, UploadStatus
 
 from typing import Dict
 import uvicorn
@@ -56,6 +57,39 @@ async def read_item(q: str, search_type: str = "hybrid") -> Dict:
         results = text_searcher.search(query=q)  
 
     return {"result": results}
+
+
+@app.post("/api/upload")
+async def upload_embeddings(file: UploadFile = File(...)) -> Dict:
+    """
+    Uploads preprocessed data with embeddings to a Qdrant collection.
+
+    Args:
+        file (UploadFile): The uploaded file containing data.
+
+    Returns:
+        dict: A dictionary containing the upload status message.
+    """
+
+    filename = file.filename
+    content = await file.read()
+
+    # Save the uploaded file temporarily
+    with open(os.path.join(DATA_DIR, filename), "wb") as buffer:
+        buffer.write(content)
+
+    uploader = Uploader()
+
+    status = uploader.upload_embeddings(filename)
+
+    # Remove the temporary file
+    os.remove(os.path.join(DATA_DIR, filename))
+
+    if status == UploadStatus.SUCCESS:
+        return {"message": "Embeddings uploaded successfully!"}
+    else:
+        return {"message": f"Upload failed: {status.value}"}
+
 
 if os.path.exists(STATIC_DIR):
     app.mount("/", StaticFiles(directory=STATIC_DIR, html=True))
