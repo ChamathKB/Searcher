@@ -1,8 +1,8 @@
 # Searcher
 
-Neural search and text search with Qdrant vectorDB, sentence-transformers embedding models, and FastAPI.
+Neural search and text as well as hybrid search with Qdrant vectorDB, sentence-transformers embedding models, cross-encoder models, and FastAPI.
 
-The demo is based on the vector search engine Qdrant and [demo app](https://github.com/qdrant/qdrant_demo).
+The demo is based on the vector search engine Qdrant and [demo app](https://github.com/qdrant/qdrant_demo) but offers a more tailored implementation for hybrid search.
 
 ## Requirements
 python:
@@ -13,25 +13,40 @@ poetry install
 
 as well as docker and docker compose.
 
-## Upload data to searcher
-### startups dataset
-o launch this demo locally you will need to download data first.
-
+## Usage
+### 1. Download Startup Dataset:
 The source of the original data is https://www.startups-list.com/
 
 Download the data via the following command:
 ```
 wget https://storage.googleapis.com/generall-shared-data/startups_demo.json -P data/
 ```
-To launch the service, use
+
+### 2. Launch using Docker:
+
+Use Docker Compose to launch the service in containers:
 ```
 docker-compose up -d
 ```
+
+### 3. Uploading Data (Two Options):
 After service is started you can upload initial data to the search engine.
+
+#### Option A: Initial Upload via Script:
 ```
 cd Searcher/backend 
 python -m searcher.init_collection_startup
 ```
+
+#### Option B: Upload via API:
+
+Ensure the service is running (either locally or in containers) and use a tool like Postman or curl to send a POST request to http://localhost:8000/api/upload with the data file included in the request body. For example, with curl:
+```
+curl -X POST http://localhost:8000/api/upload -F "file=@startups_demo.json"
+```
+Additional Notes:
+
+Replace http://localhost:8000 with the appropriate URL if you're accessing the API from a different machine.
 
 # Search API
 In the API, there are three distinct search methods available:
