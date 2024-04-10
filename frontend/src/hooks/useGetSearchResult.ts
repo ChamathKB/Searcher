@@ -27,16 +27,19 @@ export const useGetSearchResult = () => {
 	const [error, setError] = useMountedState<string | null>(null);
 	const [loading, setLoading] = useMountedState<boolean>(false);
 
-	const getSearch = async (query: string,neural?:boolean) => {
+	const getSearch = async (query: string, search_type: string) => {
 		try {
 			setLoading(true);
 			setError(null);
-			const res = await getSearchResult({ query,neural });
+			const res = await getSearchResult({ query, search_type });
 
 			switch (res.status) {
 				case StatusCodes.OK: {
 					const searchRes = res.data;
-					setData(searchRes);
+					// Update data only if component is mounted
+                    if (data !== null) { // Check if already mounted (data is not null)
+                        setData(searchRes);
+                    }
 					break;
 				}
 				default: {

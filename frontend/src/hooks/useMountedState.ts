@@ -1,15 +1,16 @@
-import { useState, useCallback, SetStateAction } from 'react';
+import { useState, useCallback } from 'react';
 
 import useMountedRef from './useMountedRef';
 
-const useMountedState = <T>(value: T | (() => T)): [T, (newState: SetStateAction<T>) => void] => {
+const useMountedState = <T>(value: T | (() => T)): [T, (newState: T) => void] => {
 	const mountedRef = useMountedRef();
 	const [state, setState] = useState<T>(value);
 
 	const setMountedState = useCallback(
-		(newValue: SetStateAction<T>) => {
-			if (mountedRef.current) {
-				setState(newValue);
+		(newState: T) => {
+			// Check if component is mounted using the string state
+			if (mountedRef.current === 'neural') {
+			  setState(newState);
 			}
 		},
 		[mountedRef],

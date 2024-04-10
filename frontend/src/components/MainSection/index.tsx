@@ -22,11 +22,11 @@ export function Main() {
   const { classes } = useStyles();
   const [query, setQuery] = useMountedState("");
   const { data, error, loading, getSearch, resetData } = useGetSearchResult();
-  const [isNeural, setIsNeural] = useMountedState(true);
+  const [isSearchType, setIsSearchType] = useMountedState("neural"); // Initial state is neural
 
   const handleSubmit = () => {
     if (query) {
-      getSearch(query, isNeural);
+      getSearch(query, isSearchType);
     }
   };
 
@@ -34,9 +34,10 @@ export function Main() {
     if (data) {
       resetData();
       setQuery(data);
-      getSearch(data, isNeural);
+      getSearch(data, isSearchType);
     }
   };
+
 
   return (
     <Container className={classes.wrapper} size={1400}>
@@ -58,16 +59,18 @@ export function Main() {
             data={[
               { label: "Neural", value: "neural" },
               { label: "Text", value: "text" },
+              { label: "Hybrid", value: "hybrid" },
             ]}
             onChange={(value) => {
-              setIsNeural(value === "neural");
+              setIsSearchType(value);
               resetData();
-              query && getSearch(query, value === "neural");
-            }}
+              // Check if query exists before fetching results
+              query && getSearch(query, value);
+             }}
             size="md"
             color="Primary.2"
             className={classes.control}
-            value={isNeural ? "neural" : "text"}
+            value={isSearchType}
           />
           <TextInput
             radius={30}

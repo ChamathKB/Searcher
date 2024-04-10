@@ -4,13 +4,14 @@ import { SEARCH_URL } from "./constants";
 
 export type SearchRequest = {
     query: string;
-    neural?: boolean;
+    search_type: string;
 }
 
 export const getSearchResult = (searchRequest:SearchRequest) => {
-    const params = {
+    const params: any = {
         q: searchRequest.query,
-        neural: searchRequest.neural
+        search_type: searchRequest.search_type,
     }
+    
     return Axios().get(SEARCH_URL, { params });
 };
