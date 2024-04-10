@@ -37,6 +37,14 @@ export function Main() {
       getSearch(data, isNeural);
     }
   };
+  
+  const [searchType, setSearchType] = useState("neural"); // Initial state
+
+  const handleSearchTypeChange = (event) => {
+    setSearchType(event.target.value);
+    resetData(); // Reset any search results
+    query && getSearch(query, event.target.value === "neural"); // Trigger search if query exists
+  };
 
   return (
     <Container className={classes.wrapper} size={1400}>
@@ -60,15 +68,11 @@ export function Main() {
               { label: "Text", value: "text" },
               { label: "Hybrid", value: "hybrid" },
             ]}
-            onChange={(value) => {
-              setIsNeural(value === "neural");
-              resetData();
-              query && getSearch(query, value === "neural");
-            }}
+            onChange={handleSearchTypeChange}
             size="md"
             color="Primary.2"
             className={classes.control}
-            value={isNeural ? "neural" : "text"}
+            value={searchType}
           />
           <TextInput
             radius={30}
