@@ -1,13 +1,20 @@
 import { useRef, useEffect } from 'react';
 
+const MOUNTED_STATES = {
+	NEURAL: 'neural',
+	TEXT: 'text',
+	HYBRID: 'hybrid',
+  };
+
 const useMountedRef = () => {
-	const mounted = useRef(false);
+	const mounted = useRef(MOUNTED_STATES.NEURAL);
 
 	useEffect(() => {
-		mounted.current = true;
+		mounted.current = MOUNTED_STATES.NEURAL;
 
 		return () => {
-			mounted.current = false;
+			// Update state based on the specific logic
+			mounted.current = MOUNTED_STATES.TEXT; // Example update to 'text' state on unmount
 		};
 	}, []);
 

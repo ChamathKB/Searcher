@@ -4,16 +4,13 @@ import { SEARCH_URL } from "./constants";
 
 export type SearchRequest = {
     query: string;
-    search_type?: SearchType;
+    search_type: string;
 }
 
 export const getSearchResult = (searchRequest:SearchRequest) => {
     const params: any = {
         q: searchRequest.query,
-    }
-
-    if (searchRequest.search_type) {
-        params[searchRequest.search_type] = true;
+        search_type: searchRequest.search_type,
     }
     
     return Axios().get(SEARCH_URL, { params });
