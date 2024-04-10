@@ -122,7 +122,7 @@ export function CustomHeader() {
               color="Neutral.8"
               variant="filled"
               component="a"
-              href="https://github.com/qdrant/qdrant_demo"
+              href="https://github.com/ChamathKB/Searcher"
               target="_blank"
               className={classes.link}
             >
@@ -136,7 +136,7 @@ export function CustomHeader() {
               color="Neutral.8"
               variant="filled"
               component="a"
-              href="https://github.com/qdrant/qdrant_demo/blob/master/README.md"
+              href="https://github.com/ChamathKB/Searcher/blob/master/README.md"
               target="_blank"
               className={classes.link}
             >

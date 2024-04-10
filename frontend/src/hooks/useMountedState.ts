@@ -1,4 +1,4 @@
-import { useState, useCallback, SetStateAction } from 'react';
+import { useState, useCallback } from 'react';
 
 import useMountedRef from './useMountedRef';
 
