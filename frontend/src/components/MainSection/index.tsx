@@ -58,6 +58,7 @@ export function Main() {
             data={[
               { label: "Neural", value: "neural" },
               { label: "Text", value: "text" },
+              { label: "Hybrid", value: "hybrid" },
             ]}
             onChange={(value) => {
               setIsNeural(value === "neural");

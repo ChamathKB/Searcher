@@ -27,11 +27,11 @@ export const useGetSearchResult = () => {
 	const [error, setError] = useMountedState<string | null>(null);
 	const [loading, setLoading] = useMountedState<boolean>(false);
 
-	const getSearch = async (query: string,neural?:boolean) => {
+	const getSearch = async (query: string, search_type?: SearchType) => {
 		try {
 			setLoading(true);
 			setError(null);
-			const res = await getSearchResult({ query,neural });
+			const res = await getSearchResult({ query, search_type });
 
 			switch (res.status) {
 				case StatusCodes.OK: {
